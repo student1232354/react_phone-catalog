@@ -150,19 +150,22 @@ export const Phones: React.FC<Props> = ({
           const inCart = cart.some(cobj => cobj.id === obj.id);
 
           return (
-            <Link
-              key={obj.id}
-              className="Brand__new__phone"
-              to={`/${obj.category}/${obj.itemId}`}
-              onClick={() => handleProductClick(obj)}
-            >
-              <img
-                className="Brand__new__phone__image"
-                src={obj.image}
-                alt={obj.itemId}
-              />
+            /* eslint-disable-next-line */
+            <div className="Brand__new__phone">
+              <Link
+                key={obj.id}
+                to={`/${obj.category}/${obj.itemId}`}
+                style={{ textDecoration: 'none' }}
+                onClick={() => handleProductClick(obj)}
+              >
+                <img
+                  className="Brand__new__phone__image"
+                  src={obj.image}
+                  alt={obj.itemId}
+                />
 
-              <p className="Brand__new__phone__title">{obj.name}</p>
+                <p className="Brand__new__phone__title">{obj.name}</p>
+              </Link>
 
               <div className="Price">
                 <span className="this__Price">${obj.price}</span>
@@ -235,7 +238,7 @@ export const Phones: React.FC<Props> = ({
                   )}
                 </button>
               </div>
-            </Link>
+            </div>
           );
         })}
       </div>

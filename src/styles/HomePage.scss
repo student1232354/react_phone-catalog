@@ -92,6 +92,46 @@
   }
 }
 
+.buttonn__rotated {
+    height: 400px;
+  width: 32px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  background-color: #fff;
+  border: 1px solid #e2e6e9;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+
+  background-image: url('/img/arrow.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px;
+  transform: rotate(180deg);
+
+  &:disabled,
+  &.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #e2e6e9;
+  }
+
+  &:active:not(:disabled) {
+    background-color: #e2e6e9;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: #b4bdc3;
+    background-color: #fafbfc;
+  }
+
+
+}
+
 .buttonn,
 .buttonn--prev {
   height: 400px;
@@ -265,5 +305,9 @@
     width: 110px;
     height: 30px;
     font-size: 10px;
+  }
+
+  .buttonn__rotated {
+    display: none;
   }
 }

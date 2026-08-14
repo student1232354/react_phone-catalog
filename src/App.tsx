@@ -25,13 +25,19 @@ export interface NewModel {
   ram: string;
   year: number;
   image: string;
+  selectedCapacity?: string;
+  selectedColor?: string;
+}
+
+export interface CartItem extends NewModel {
+  quantity: number;
 }
 
 export const AppContent: React.FC = () => {
   const [models, setModels] = useState<NewModel[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<NewModel | null>(null);
   const [FavouritesA, setFavouritesA] = useState<NewModel[]>([]);
-  const [cart, setcart] = useState<NewModel[]>([]);
+  const [cart, setcart] = useState<CartItem[]>([]);
 
   const addingObj = (obj: NewModel) => {
     setFavouritesA(prevArray => {
@@ -45,14 +51,32 @@ export const AppContent: React.FC = () => {
     });
   };
 
+  const handleIncrease = (id: number) => {
+    setcart(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
+      ),
+    );
+  };
+
+  const handleDecrease = (id: number) => {
+    setcart(prev =>
+      prev
+        .map(item =>
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item,
+        )
+        .filter(item => item.quantity > 0),
+    );
+  };
+
   const addingObjCart = (obj: NewModel) => {
     setcart(prevArray => {
-      const Existfb = prevArray.some(cobj => cobj.id === obj.id);
+      const exists = prevArray.some(cobj => cobj.id === obj.id);
 
-      if (Existfb) {
+      if (exists) {
         return prevArray.filter(cobj => cobj.id !== obj.id);
       } else {
-        return [...prevArray, obj];
+        return [...prevArray, { ...obj, quantity: 1 }];
       }
     });
   };
@@ -70,7 +94,8 @@ export const AppContent: React.FC = () => {
   return (
     <>
       <div data-cy="app">
-        <Navbar FavouritesA={FavouritesA} Cart={cart} />
+        {/* eslint-disable-next-line */}
+        <Navbar cart={cart} favourites={FavouritesA} />
         <main className="section">
           <div className="container">
             <Routes>
@@ -147,12 +172,24 @@ export const AppContent: React.FC = () => {
               <Route
                 path="/favourites"
                 element={
-                  <Favourites addingObj={addingObj} FavouritesA={FavouritesA} />
+                  <Favourites
+                    cart={cart}
+                    addingObjCart={addingObjCart}
+                    addingObj={addingObj}
+                    FavouritesA={FavouritesA}
+                  />
                 }
               />
               <Route
                 path="/cart"
-                element={<Cart addingObjCart={addingObjCart} cart={cart} />}
+                element={
+                  <Cart
+                    onIncrease={handleIncrease}
+                    onDecrease={handleDecrease}
+                    addingObjCart={addingObjCart}
+                    cart={cart}
+                  />
+                }
               />
 
               <Route path="*" element={<NotFoundPage />} />

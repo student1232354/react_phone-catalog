@@ -20,15 +20,15 @@ export const NavbarFooter: React.FC = () => {
         </div>
         <div className="navbar__menu__footer">
           <a
-            className="link"
+            className="link__footer"
             href="https://github.com/student1232354/react_phone-catalog"
           >
             GITHUB
           </a>
-          <NavLink className="link" to="/">
+          <NavLink className="link__footer" to="/">
             CONTACTS
           </NavLink>
-          <NavLink className="link" to="/">
+          <NavLink className="link__footer" to="/">
             RIGHTS
           </NavLink>
         </div>

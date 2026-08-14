@@ -14,14 +14,23 @@ export interface NewModel {
   ram: string;
   year: number;
   image: string;
+  selectedCapacity?: string;
+  selectedColor?: string;
 }
 
 interface Props {
+  cart: NewModel[];
+  addingObjCart: (product: NewModel) => void;
   addingObj: (FavouritesA: NewModel) => void;
   FavouritesA: NewModel[];
 }
 
-export const Favourites: React.FC<Props> = ({ addingObj, FavouritesA }) => {
+export const Favourites: React.FC<Props> = ({
+  cart,
+  addingObjCart,
+  addingObj,
+  FavouritesA,
+}) => {
   return (
     <div className="Favourites">
       <div className="rootline">
@@ -39,26 +48,26 @@ export const Favourites: React.FC<Props> = ({ addingObj, FavouritesA }) => {
       <div className="Phones__List">
         {FavouritesA.map(obj => {
           const isFavorite = FavouritesA.some(cobj => cobj.id === obj.id);
+          const isChosen = cart?.some(cobj => cobj.id === obj.id);
 
           return (
-            <div key={obj.id} className="Brand__new__phone">
-              <img
-                className="Brand__new__phone__image"
-                src={obj.image}
-                alt={obj.itemId}
-              />
+            /* eslint-disable-next-line */
+            <div className="Brand__new__phone">
+              <div key={obj.id} style={{ textDecoration: 'none' }}>
+                <img
+                  className="Brand__new__phone__image"
+                  src={obj.image}
+                  alt={obj.itemId}
+                />
 
-              <p className="Brand__new__phone__title">{obj.name}</p>
+                <p className="Brand__new__phone__title">{obj.name}</p>
+              </div>
 
               <div className="Price">
                 <span className="this__Price">${obj.price}</span>
-                <span className="Price__without__Discount">
-                  ${obj.fullPrice}
-                </span>
               </div>
 
               <div className="phone__Line"></div>
-
               <ul className="charasteristics">
                 <li className="each">
                   <span className="part__of__List">Screen</span>
@@ -73,25 +82,24 @@ export const Favourites: React.FC<Props> = ({ addingObj, FavouritesA }) => {
                   <span className="part__of__char">{obj.ram}</span>
                 </li>
               </ul>
-
               <div className="contract__buttons">
                 <button
                   type="button"
-                  className="Add__to__cart"
+                  className={isChosen ? 'Added__to__Cart' : 'Add__to__cart'}
                   onClick={e => {
                     e.stopPropagation();
+                    addingObjCart(obj);
                   }}
                 >
-                  Add to cart
+                  {isChosen ? 'Added to cart' : 'Add to cart'}
                 </button>
-
                 <button
                   type="button"
                   className="heart"
                   aria-label="Add to favorites"
                   onClick={e => {
                     e.stopPropagation();
-                    addingObj(obj);
+                    addingObj?.(obj);
                   }}
                 >
                   {isFavorite ? (

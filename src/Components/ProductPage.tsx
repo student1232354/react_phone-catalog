@@ -15,6 +15,8 @@ export interface NewModel {
   ram: string;
   year: number;
   image: string;
+  selectedCapacity?: string;
+  selectedColor?: string;
 }
 
 export interface ProductDetails {
@@ -210,7 +212,9 @@ export const ProductPage: React.FC<ProductPageProps> = ({
       </Link>
 
       <div className="visuals">
-        <p className="visuals__title">{chosenobj.name}</p>
+        <p className="visuals__title">
+          {chosenobj.namespaceId.replaceAll('-', ' ')}
+        </p>
 
         <div className="visuals__info">
           <div className="All__photos">
@@ -284,7 +288,13 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                       className={
                         isMainCart ? 'Added__to__Cart' : 'cart__button'
                       }
-                      onClick={() => addingObjCart(selectedProduct)}
+                      onClick={() => {
+                        addingObjCart({
+                          ...selectedProduct,
+                          capacity: activeCapacity,
+                          color: activeColor,
+                        });
+                      }}
                     >
                       {isMainCart ? 'Added to cart' : 'Add to cart'}
                     </button>
@@ -431,41 +441,40 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               Chuslo === 0 ? 'Button__another__design' : 'Button__List__this'
             }
             onClick={() => handlePrev()}
-          >
-            {'<'}
-          </button>
+          ></button>
           <button
             className={
               Chuslo === 194 ? 'Button__another__design' : 'Button__List__this'
             }
             onClick={() => handleNext()}
-          >
-            {'>'}
-          </button>
+          ></button>
         </div>
       </div>
       <div className="Brand__new__List">
         {sortedToNewArray.slice(Chuslo, Chuslo + 4).map(obj => {
+          const isFavorite = FavouritesA.some(cobj => cobj.id === obj.id);
+          const isChosen = cart?.some(cobj => cobj.id === obj.id);
+
           return (
             /* eslint-disable-next-line */
-            <div className="Brand__new__phone"
-              onClick={() => {
-                handleProductClick(obj);
-              }}
-            >
-              <img
-                className="Brand__new__phone__image"
-                src={obj.image}
-                alt={obj.itemId}
-              />
+            <div className="Brand__new__phone">
+              <Link
+                key={obj.id}
+                to={`/${obj.category}/${obj.itemId}`}
+                onClick={() => handleProductClick(obj)}
+                style={{ textDecoration: 'none' }}
+              >
+                <img
+                  className="Brand__new__phone__image"
+                  src={obj.image}
+                  alt={obj.itemId}
+                />
 
-              <p className="Brand__new__phone__title">{obj.name}</p>
+                <p className="Brand__new__phone__title">{obj.name}</p>
+              </Link>
 
               <div className="Price">
                 <span className="this__Price">${obj.price}</span>
-                <span className="Price__without__Discount">
-                  ${obj.fullPrice}
-                </span>
               </div>
 
               <div className="phone__Line"></div>
@@ -484,22 +493,49 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 </li>
               </ul>
               <div className="contract__buttons">
-                <button type="button" className="Add__to__cart">
-                  Add to cart
+                <button
+                  type="button"
+                  className={isChosen ? 'Added__to__Cart' : 'Add__to__cart'}
+                  onClick={e => {
+                    e.stopPropagation();
+                    addingObjCart(obj);
+                  }}
+                >
+                  {isChosen ? 'Added to cart' : 'Add to cart'}
                 </button>
                 <button
                   type="button"
                   className="heart"
                   aria-label="Add to favorites"
+                  onClick={e => {
+                    e.stopPropagation();
+                    addingObj?.(obj);
+                  }}
                 >
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path
-                      /* eslint-disable-next-line */
-                      d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
-                      stroke="#313237"
-                      strokeWidth="1.5"
-                    />
-                  </svg>
+                  {isFavorite ? (
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="#EB5757"
+                    >
+                      <path
+                        /* eslint-disable-next-line */
+                        d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
+                        stroke="#EB5757"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  ) : (
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        /* eslint-disable-next-line */
+                        d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
+                        stroke="#313237"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  )}
                 </button>
               </div>
             </div>

@@ -17,20 +17,22 @@ export interface NewModel {
   image: string;
 }
 
-interface Props {
-  FavouritesA?: NewModel[];
-  Cart?: NewModel[];
+export interface CartItem extends NewModel {
+  quantity: number;
 }
 
-export const Navbar: React.FC<Props> = ({ FavouritesA, Cart }) => {
+interface Props {
+  favourites?: NewModel[];
+  cart?: CartItem[];
+}
+
+export const Navbar: React.FC<Props> = ({ favourites = [], cart = [] }) => {
   const [opened, setOpened] = useState(false);
 
-  const functionforopening = () => {
-    if (opened === false) {
-      setOpened(true);
-    } else {
-      setOpened(false);
-    }
+  const totalCartItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  const toggleMenu = () => {
+    setOpened(prev => !prev);
   };
 
   return (
@@ -64,13 +66,16 @@ export const Navbar: React.FC<Props> = ({ FavouritesA, Cart }) => {
 
         <div className="navbar__actions">
           <NavLink className="link-right-cart" to="/favourites">
-            {FavouritesA && FavouritesA.length > 0 && (
-              <span className="circle__counter">{FavouritesA.length}</span>
+            <span className="icon icon--favourite" />
+            {favourites.length > 0 && (
+              <span className="circle__counter">{favourites.length}</span>
             )}
           </NavLink>
+
           <NavLink className="link-right-shop" to="/cart">
-            {Cart && Cart.length > 0 && (
-              <span className="circle__counter__second">{Cart.length}</span>
+            <span className="icon icon--cart" />
+            {totalCartItems > 0 && (
+              <span className="circle__counter__second">{totalCartItems}</span>
             )}
           </NavLink>
         </div>
@@ -79,47 +84,37 @@ export const Navbar: React.FC<Props> = ({ FavouritesA, Cart }) => {
           type="button"
           className="burger__menu"
           aria-label="Toggle menu"
-          onClick={() => functionforopening()}
-        ></button>
+          onClick={toggleMenu}
+        />
+
         {opened && (
           <div className="burger__list">
             <div className="burger__navbar__left">
               <div className="burger__header">
-                <NavLink className="navbar__logo" to="/">
-                  <img src="/img/Logo.svg" alt="Nice Gadgets Logo" />
+                <NavLink className="navbar__logo" to="/" onClick={toggleMenu}>
+                  <img alt="Nice Gadgets Logo" />
                 </NavLink>
                 <button
+                  type="button"
                   className="cross__header__button"
-                  onClick={() => functionforopening()}
-                ></button>
+                  onClick={toggleMenu}
+                />
               </div>
 
               <div className="burger__navbar__menu">
-                <NavLink
-                  className="link"
-                  to="/"
-                  onClick={() => functionforopening()}
-                >
+                <NavLink className="link" to="/" onClick={toggleMenu}>
                   Home
                 </NavLink>
-                <NavLink
-                  className="link"
-                  to="/phones"
-                  onClick={() => functionforopening()}
-                >
+                <NavLink className="link" to="/phones" onClick={toggleMenu}>
                   Phones
                 </NavLink>
-                <NavLink
-                  className="link"
-                  to="/tablets"
-                  onClick={() => functionforopening()}
-                >
+                <NavLink className="link" to="/tablets" onClick={toggleMenu}>
                   Tablets
                 </NavLink>
                 <NavLink
                   className="link"
                   to="/accessories"
-                  onClick={() => functionforopening()}
+                  onClick={toggleMenu}
                 >
                   Accessories
                 </NavLink>
@@ -130,22 +125,23 @@ export const Navbar: React.FC<Props> = ({ FavouritesA, Cart }) => {
               <NavLink
                 className="burger__link-right-cart"
                 to="/favourites"
-                onClick={() => functionforopening()}
+                onClick={toggleMenu}
               >
-                {FavouritesA && FavouritesA.length > 0 && (
+                {favourites.length > 0 && (
                   <span className="burger__circle__counter">
-                    {FavouritesA.length}
+                    {favourites.length}
                   </span>
                 )}
               </NavLink>
+
               <NavLink
                 className="burger__link__link-right-shop"
                 to="/cart"
-                onClick={() => functionforopening()}
+                onClick={toggleMenu}
               >
-                {Cart && Cart.length > 0 && (
+                {totalCartItems > 0 && (
                   <span className="burger__circle__counter__second">
-                    {Cart.length}
+                    {totalCartItems}
                   </span>
                 )}
               </NavLink>

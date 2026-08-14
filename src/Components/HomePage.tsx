@@ -5,9 +5,21 @@ import { HomePageList } from './HomePageList';
 import { Link } from 'react-router-dom';
 
 const banners = [
-  { id: 1, img: '/img/banner-phones.png', link: '/phones' },
-  { id: 2, img: '/img/banner-tablets.png', link: '/tablets' },
-  { id: 3, img: '/img/banner-accessories.png', link: '/accessories' },
+  {
+    id: 1,
+    img: `${import.meta.env.BASE_URL}img/banner-tablets.png`,
+    link: '/phones',
+  },
+  {
+    id: 2,
+    img: `${import.meta.env.BASE_URL}img/banner-tablets.png`,
+    link: '/tablets',
+  },
+  {
+    id: 3,
+    img: `${import.meta.env.BASE_URL}img/banner-accessories.png`,
+    link: '/accessories',
+  },
 ];
 
 export interface NewModel {
@@ -56,7 +68,7 @@ export const HomePage: React.FC<Props> = ({
     <div className="smth">
       <h1 className="Welcome__title">Welcome to Nice Gadgets store!</h1>
       <div className="main__thing">
-        <button className="buttonn" onClick={handlePrev}></button>
+        <button className="buttonn__rotated" onClick={handlePrev}></button>
         <div className="something__like">
           <div className="BannerSlider__window">
             <div

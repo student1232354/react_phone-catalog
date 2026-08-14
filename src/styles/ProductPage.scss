@@ -4,32 +4,26 @@ $primary-color: #313237;
 $secondary-color: #89939a;
 $border-color: #b4bdc3;
 $border-light: #e2e6e9;
-$white: #ffffff;
+$white: #fff;
 $color-green: #27ae60;
 $color-elements: #e2e6e9;
-$color-white: #ffffff;
-
-/* stylelint-disable no-descending-specificity */
+$color-white: #fff;
 
 .Added__to__Cart {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  width: 100%;
-  height: 40px;
+  width: 260px;
+  height: 48px;
   padding: 0 16px;
   box-sizing: border-box;
-
   background-color: $color-white;
   border: 1px solid $color-elements;
   color: $color-green;
-
   font-family: Mont, sans-serif;
   font-size: 14px;
   font-weight: 700;
   line-height: 21px;
-
   cursor: pointer;
   outline: none;
   transition: border-color 0.2s ease, background-color 0.2s ease;
@@ -37,6 +31,10 @@ $color-white: #ffffff;
   &:hover {
     border-color: $color-green;
     background-color: #f7fbf8;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
   }
 }
 
@@ -63,6 +61,7 @@ $color-white: #ffffff;
   .rootline {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 24px;
     font-size: 12px;
@@ -132,18 +131,9 @@ $color-white: #ffffff;
       gap: 64px;
       margin-bottom: 80px;
 
-      @media (max-width: 900px) {
-        flex-direction: column;
-        gap: 32px;
-      }
-
       &__title {
         width: 320px;
         flex-shrink: 0;
-
-        @media (max-width: 900px) {
-          width: 100%;
-        }
       }
     }
 
@@ -156,11 +146,6 @@ $color-white: #ffffff;
     &__additional {
       display: flex;
       gap: 64px;
-
-      @media (max-width: 768px) {
-        flex-direction: column;
-        gap: 40px;
-      }
 
       &__first {
         flex: 1;
@@ -202,6 +187,7 @@ $color-white: #ffffff;
   .colors {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 
     button {
       width: 32px;
@@ -239,6 +225,7 @@ $color-white: #ffffff;
   .capacity__button {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 
     .capacity__buttons {
       height: 32px;
@@ -247,7 +234,7 @@ $color-white: #ffffff;
       font-size: 14px;
       font-weight: 600;
       color: #313237;
-      background-color: #ffffff;
+      background-color: #fff;
       border: 1px solid #b4bdc3;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -258,7 +245,7 @@ $color-white: #ffffff;
 
       &.is-active {
         background-color: #313237;
-        color: #ffffff;
+        color: #fff;
         border-color: #313237;
       }
     }
@@ -295,6 +282,71 @@ $color-white: #ffffff;
       font-weight: 600;
     }
   }
+
+  @media (max-width: 1024px) {
+    .visuals {
+      &__info {
+        gap: 32px;
+
+        &__title {
+          width: 280px;
+        }
+      }
+
+      &__additional {
+        gap: 32px;
+      }
+    }
+  }
+
+  @media (max-width: 900px) {
+    .visuals {
+      &__info {
+        flex-direction: column;
+        gap: 32px;
+        margin-bottom: 40px;
+
+        &__title {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 16px 12px 40px;
+
+    .rootline {
+      margin-bottom: 16px;
+    }
+
+    .visuals {
+      &__title {
+        font-size: 24px;
+        line-height: 30px;
+        margin: 0 0 20px;
+      }
+
+      &__additional {
+        flex-direction: column;
+        gap: 24px;
+
+        &__header {
+          font-size: 18px;
+          margin-bottom: 12px;
+        }
+
+        &__under {
+          font-size: 16px;
+          margin: 20px 0 12px;
+        }
+      }
+    }
+
+    .additional__line__long {
+      margin-bottom: 20px;
+    }
+  }
 }
 
 .All__photos {
@@ -313,7 +365,7 @@ $color-white: #ffffff;
       border: 1px solid #e2e6e9;
       padding: 8px;
       cursor: pointer;
-      background-color: #ffffff;
+      background-color: #fff;
       box-sizing: border-box;
       transition: border-color 0.2s ease-in-out;
 
@@ -329,7 +381,7 @@ $color-white: #ffffff;
 
   .Chosen__photo {
     width: 100%;
-    min-width: 464px;
+    min-width: 0;
     max-width: 465px;
     height: 464px;
     display: flex;
@@ -346,21 +398,42 @@ $color-white: #ffffff;
     }
   }
 
+  @media (max-width: 768px) {
+    .Chosen__photo {
+      height: 380px;
+    }
+
+    .visuals__info__photos {
+      .small__img {
+        width: 64px;
+        height: 64px;
+      }
+    }
+  }
+
   @media (max-width: 640px) {
     flex-direction: column-reverse;
+    gap: 12px;
 
     .visuals__info__photos {
       flex-direction: row;
       justify-content: center;
+      gap: 8px;
+      overflow-x: auto;
+      max-width: 100%;
+      padding-bottom: 4px;
 
       .small__img {
         width: 50px;
         height: 50px;
+        padding: 4px;
+        flex-shrink: 0;
       }
     }
 
     .Chosen__photo {
-      height: 320px;
+      height: 280px;
+      max-width: 100%;
     }
   }
 }
@@ -394,7 +467,8 @@ $color-white: #ffffff;
 
     .cart__button {
       flex: 1;
-      height: 100%;
+      width: 260px;
+      height: 48px;
       background-color: $primary-color;
       color: $white;
       font-size: 14px;
@@ -417,6 +491,7 @@ $color-white: #ffffff;
     .love__button {
       width: 48px;
       height: 48px;
+      flex-shrink: 0;
       background-color: transparent;
       border: 1px solid $border-color;
       cursor: pointer;
@@ -461,4 +536,89 @@ $color-white: #ffffff;
       }
     }
   }
+
+  @media (max-width: 768px) {
+    margin-top: 20px;
+
+    .this__Price {
+      font-size: 26px;
+    }
+
+    .Price__without__Discount {
+      font-size: 18px;
+    }
+
+    .this__Price__Buttons {
+      margin-bottom: 24px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      display: block;
+    }
+
+    .section {
+      max-height: 480px;
+    }
+
+    .this__Price__Buttons {
+      .cart__button {
+        width: auto;
+      }
+    }
+  }
 }
+
+.Button__List__this,
+.Button__another__design {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1px solid #b4bdc3;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-image: url("/img/arrow.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px;
+
+  &:hover {
+    border-color: #313237;
+  }
+
+  &:active {
+    background-color: #f0f2f3;
+  }
+}
+
+.Button__List__this:first-child,
+.Button__another__design:first-child {
+  transform: rotate(180deg);
+}
+
+.Button__another__design {
+  opacity: 0.5;
+  border-color: #e2e6e9;
+  cursor: not-allowed;
+
+  &:hover {
+    border-color: #e2e6e9;
+  }
+}
+
+  @media (max-width: 480px) {
+    .container {
+      display: block;
+    }
+
+    .visuals {
+      margin-bottom: 20px;
+    }
+  }

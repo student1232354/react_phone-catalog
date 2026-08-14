@@ -45,6 +45,10 @@ html, body {
     text-decoration: none;
 
     img {
+      background-image: url('/img/Logo.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
       height: 28px;
       width: auto;
       display: block;
@@ -70,7 +74,7 @@ html, body {
   position: relative;
   display: flex;
   align-items: center;
-  height: 64px;
+  height: 85px;
   font-family: Mont, sans-serif;
   font-weight: 800;
   font-size: 12px;

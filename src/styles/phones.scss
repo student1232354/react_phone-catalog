@@ -1,13 +1,13 @@
+$color-green: #27ae60;
+$color-elements: #e2e6e9;
+$color-white: #fff;
+
 .Phones__List {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   margin-bottom: 40px;
 }
-
-$color-green: #27ae60;
-$color-elements: #e2e6e9;
-$color-white: #ffffff;
 
 .button__notExist {
   display: none;
@@ -27,7 +27,7 @@ $color-white: #ffffff;
   border: 1px solid $color-elements;
   color: $color-green;
 
-  font-family: 'Mont', sans-serif;
+  font-family: Mont, sans-serif;
   font-size: 14px;
   font-weight: 700;
   line-height: 21px;
@@ -52,7 +52,12 @@ $color-white: #ffffff;
   background-repeat: no-repeat;
   background-position: center;
 
-  background-image: url('/img/arrow.svg');
+  background-image: url("/img/arrow.svg");
+  margin: 0;
+  font-family: Mont, sans-serif;
+  font-size: 12px;
+  color: #89939a;
+  line-height: 1;
 }
 
 .phones-page {
@@ -79,17 +84,9 @@ $color-white: #ffffff;
   }
 }
 
-.root__arrow {
-  margin: 0;
-  font-family: 'Mont', sans-serif;
-  font-size: 12px;
-  color: #89939a;
-  line-height: 1;
-}
-
 .root__thing {
   margin: 0;
-  font-family: 'Mont', sans-serif;
+  font-family: Mont, sans-serif;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
@@ -97,30 +94,22 @@ $color-white: #ffffff;
 }
 
 .Mobile__phones {
-  font-family: 'Mont', sans-serif;
+  font-family: Mont, sans-serif;
+  font-size: 32px;
   font-weight: 800;
-  font-style: Bold;
-  font-size: 48px;
+  line-height: 41px;
+  letter-spacing: -0.01em;
   color: #313237;
-  line-height: 56px;
-  letter-spacing: -1%;
-  margin: 0;
-}
-
-.this__buttons {
-  display: flex;
-  justify-content: center;
+  margin: 24px 0 8px;
 }
 
 .count {
-  margin: 0;
-  font-family: 'Mont', sans-serif;
-  margin-bottom: 40px;
-  font-weight: 600;
+  font-family: Mont, sans-serif;
   font-size: 14px;
-  color: #89939a;
+  font-weight: 600;
   line-height: 21px;
-  letter-spacing: 0%;
+  color: #89939a;
+  margin-bottom: 32px;
 }
 
 .this__buttons {
@@ -139,25 +128,21 @@ $color-white: #ffffff;
     height: 32px;
     box-sizing: border-box;
 
-    background-color: #ffffff;
+    background-color: #fff;
     border: 1px solid #b4bdc3;
     color: #313237;
 
-    font-family: 'Mont', sans-serif;
+    font-family: Mont, sans-serif;
     font-size: 14px;
     font-weight: 600;
     line-height: 21px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 
-    &:hover:not(:disabled):not(.is-active) {
-      border-color: #313237;
-    }
-
     &.is-active {
       background-color: #313237;
       border-color: #313237;
-      color: #ffffff;
+      color: #fff;
     }
 
     &:disabled {
@@ -165,26 +150,11 @@ $color-white: #ffffff;
       color: #b4bdc3;
       cursor: not-allowed;
     }
+
+    &:hover:not(:disabled, .is-active) {
+      border-color: #313237;
+    }
   }
-}
-
-.Mobile__phones {
-  font-family: 'Mont', sans-serif;
-  font-size: 32px;
-  font-weight: 800;
-  line-height: 41px;
-  letter-spacing: -0.01em;
-  color: #313237;
-  margin: 24px 0 8px 0;
-}
-
-.count {
-  font-family: 'Mont', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 21px;
-  color: #89939a;
-  margin-bottom: 32px;
 }
 
 .Filters__other {
@@ -200,7 +170,7 @@ $color-white: #ffffff;
   gap: 4px;
 
   &__label {
-    font-family: 'Mont', sans-serif;
+    font-family: Mont, sans-serif;
     font-size: 12px;
     font-weight: 600;
     line-height: 15px;
@@ -212,13 +182,13 @@ $color-white: #ffffff;
     padding: 0 36px 0 12px;
     box-sizing: border-box;
 
-    font-family: 'Mont', sans-serif;
+    font-family: Mont, sans-serif;
     font-size: 14px;
     font-weight: 600;
     line-height: 21px;
     color: #313237;
 
-    background-color: #ffffff;
+    background-color: #fff;
     border: 1px solid #b4bdc3;
     border-radius: 0;
     outline: none;
@@ -270,7 +240,7 @@ $color-white: #ffffff;
 }
 
 @media (max-width: 639px) {
-.container {
+  .container {
     display: flex;
     justify-content: center;
     margin-left: auto;
@@ -278,6 +248,7 @@ $color-white: #ffffff;
     padding-left: 16px;
     padding-right: 16px;
   }
+
   .phones-page {
     margin-left: 16px;
     margin-right: 16px;
@@ -317,5 +288,3 @@ $color-white: #ffffff;
     margin-bottom: 40px;
   }
 }
-
-

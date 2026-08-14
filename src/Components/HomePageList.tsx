@@ -15,6 +15,8 @@ export interface NewModel {
   ram: string;
   year: number;
   image: string;
+  selectedCapacity?: string;
+  selectedColor?: string;
 }
 
 interface Props {
@@ -84,16 +86,14 @@ export const HomePageList: React.FC<Props> = ({
             disabled={chusloNew === 0}
             onClick={handlePrevNew}
             aria-label="Previous page"
-          >
-          </button>
+          ></button>
           <button
             type="button"
             className="Button__List__item Button__List__item--next"
             disabled={chusloNew + 4 >= sortedToNewArray.length}
             onClick={handleNextNew}
             aria-label="Next page"
-          >
-          </button>
+          ></button>
         </div>
       </div>
 
@@ -103,25 +103,24 @@ export const HomePageList: React.FC<Props> = ({
           const isChosen = cart?.some(cobj => cobj.id === obj.id);
 
           return (
-            <Link
-              key={obj.id}
-              className="Brand__new__phone"
-              to={`/${obj.category}/${obj.itemId}`}
-              onClick={() => handleProductClick(obj)}
-            >
-              <img
-                className="Brand__new__phone__image"
-                src={obj.image}
-                alt={obj.itemId}
-              />
+            <div className="Brand__new__phone" key={obj.id}>
+              <Link
+                to={`/${obj.category}/${obj.itemId}`}
+                onClick={() => handleProductClick(obj)}
+                style={{ textDecoration: 'none' }}
+              >
+                <img
+                  className="Brand__new__phone__image"
+                  src={obj.image}
+                  alt={obj.itemId}
+                />
 
-              <p className="Brand__new__phone__title">{obj.name}</p>
+                <p className="Brand__new__phone__title">{obj.name}</p>
+
+              </Link>
 
               <div className="Price">
                 <span className="this__Price">${obj.price}</span>
-                <span className="Price__without__Discount">
-                  ${obj.fullPrice}
-                </span>
               </div>
 
               <div className="phone__Line"></div>
@@ -143,9 +142,10 @@ export const HomePageList: React.FC<Props> = ({
                 <button
                   type="button"
                   className={isChosen ? 'Added__to__Cart' : 'Add__to__cart'}
-                  onClick={e => {e.stopPropagation();
-                    addingObjCart(obj);}
-                  }
+                  onClick={e => {
+                    e.stopPropagation();
+                    addingObjCart(obj);
+                  }}
                 >
                   {isChosen ? 'Added to cart' : 'Add to cart'}
                 </button>
@@ -184,7 +184,7 @@ export const HomePageList: React.FC<Props> = ({
                   )}
                 </button>
               </div>
-            </Link>
+            </div>
           );
         })}
       </div>
@@ -245,16 +245,14 @@ export const HomePageList: React.FC<Props> = ({
             disabled={chusloHot === 0}
             onClick={handlePrevHot}
             aria-label="Previous page"
-          >
-          </button>
+          ></button>
           <button
             type="button"
             className="Button__List__item Button__List__item--next"
             disabled={chusloHot + 4 >= sortedToHotArray.length}
             onClick={handleNextHot}
             aria-label="Next page"
-          >
-          </button>
+          ></button>
         </div>
       </div>
 
@@ -264,25 +262,26 @@ export const HomePageList: React.FC<Props> = ({
           const isChosen = cart?.some(cobj => cobj.id === obj.id);
 
           return (
-            <Link
-              key={obj.id}
-              className="Brand__new__phone"
-              to={`/${obj.category}/${obj.itemId}`}
-              onClick={() => handleProductClick(obj)}
-            >
-              <img
-                className="Brand__new__phone__image"
-                src={obj.image}
-                alt={obj.itemId}
-              />
+            <div className="Brand__new__phone">
+              <Link
+                key={obj.id}
 
-              <p className="Brand__new__phone__title">{obj.name}</p>
+                to={`/${obj.category}/${obj.itemId}`}
+                onClick={() => handleProductClick(obj)}
+                style={{ textDecoration: 'none' }}
+              >
+                <img
+                  className="Brand__new__phone__image"
+                  src={obj.image}
+                  alt={obj.itemId}
+                />
+
+                <p className="Brand__new__phone__title">{obj.name}</p>
+
+              </Link>
 
               <div className="Price">
                 <span className="this__Price">${obj.price}</span>
-                <span className="Price__without__Discount">
-                  ${obj.fullPrice}
-                </span>
               </div>
 
               <div className="phone__Line"></div>
@@ -304,9 +303,10 @@ export const HomePageList: React.FC<Props> = ({
                 <button
                   type="button"
                   className={isChosen ? 'Added__to__Cart' : 'Add__to__cart'}
-                  onClick={e => {e.stopPropagation();
-                    addingObjCart(obj);}
-                  }
+                  onClick={e => {
+                    e.stopPropagation();
+                    addingObjCart(obj);
+                  }}
                 >
                   {isChosen ? 'Added to cart' : 'Add to cart'}
                 </button>
@@ -327,6 +327,7 @@ export const HomePageList: React.FC<Props> = ({
                       fill="#EB5757"
                     >
                       <path
+                        /* eslint-disable-next-line */
                         d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
                         stroke="#EB5757"
                         strokeWidth="1.5"
@@ -335,6 +336,7 @@ export const HomePageList: React.FC<Props> = ({
                   ) : (
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                       <path
+                        /* eslint-disable-next-line */
                         d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
                         stroke="#313237"
                         strokeWidth="1.5"
@@ -343,7 +345,7 @@ export const HomePageList: React.FC<Props> = ({
                   )}
                 </button>
               </div>
-            </Link>
+            </div>
           );
         })}
       </div>

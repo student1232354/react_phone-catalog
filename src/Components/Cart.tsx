@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React from 'react';
 import '../styles/cart.scss';
 
 export interface NewModel {
@@ -15,43 +15,34 @@ export interface NewModel {
   ram: string;
   year: number;
   image: string;
+  selectedCapacity?: string;
+  selectedColor?: string;
+}
+
+export interface CartItem extends NewModel {
+  quantity: number;
 }
 
 interface Props {
-  cart?: NewModel[];
+  addingChangedThings?: string;
+  cart?: CartItem[];
   addingObjCart: (cart: NewModel) => void;
+  onIncrease: (id: number) => void;
+  onDecrease: (id: number) => void;
 }
 
-export const Cart: React.FC<Props> = ({ addingObjCart, cart = [] }) => {
-  const [quantities, setQuantities] = useState<Record<number, number>>({});
-
-  const getItemCount = (id: number) => quantities[id] || 1;
-
-  const handleIncrease = (id: number) => {
-    setQuantities(prev => ({
-      ...prev,
-      [id]: (prev[id] || 1) + 1,
-    }));
-  };
-
-  const handleDecrease = (obj: NewModel) => {
-    const currentCount = getItemCount(obj.id);
-
-    if (currentCount > 1) {
-      setQuantities(prev => ({
-        ...prev,
-        [obj.id]: currentCount - 1,
-      }));
-    } else {
-      addingObjCart(obj);
-    }
-  };
-
+export const Cart: React.FC<Props> = ({
+  addingObjCart,
+  cart = [],
+  onIncrease,
+  onDecrease,
+}) => {
   const totalPrice = cart.reduce(
-    (sum, item) => sum + item.price * getItemCount(item.id),
+    (sum, item) => sum + item.price * item.quantity,
     0,
   );
-  const totalItems = cart.reduce((sum, item) => sum + getItemCount(item.id), 0);
+
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className="Cart">
@@ -69,42 +60,47 @@ export const Cart: React.FC<Props> = ({ addingObjCart, cart = [] }) => {
 
       <div className="Count__Box">
         <div className="Count__List">
-          {cart.map(obj => {
-            const count = getItemCount(obj.id);
+          {cart.map(obj => (
+            <div className="one__model" key={obj.id}>
+              <button
+                type="button"
+                className="crossButton"
+                onClick={() => addingObjCart(obj)}
+                aria-label="Remove item"
+              />
 
-            return (
-              <div className="one__model" key={obj.id}>
+              <Link to={`/${obj.category}/${obj.itemId}`}>
+                <img className="Count__image" src={obj.image} alt={obj.name} />
+              </Link>
+
+              <Link
+                to={`/${obj.category}/${obj.itemId}`}
+                className="obj__title"
+              >
+                {obj.name.replace(/\s+(\d+(GB|TB)|\d+mm)\s+.+$/, '')}{' '}
+                {obj.capacity} {obj.color}
+              </Link>
+
+              <div className="Counter">
                 <button
                   type="button"
-                  className="crossButton"
-                  onClick={() => addingObjCart(obj)}
-                  aria-label="Remove item"
+                  className="minus"
+                  aria-label="Decrease quantity"
+                  disabled={obj.quantity <= 1}
+                  onClick={() => onDecrease(obj.id)}
                 />
-
-                <img className="Count__image" src={obj.image} alt={obj.name} />
-
-                <p className="obj__title">{obj.name}</p>
-
-                <div className="Counter">
-                  <button
-                    type="button"
-                    className="minus"
-                    aria-label="Decrease quantity"
-                    onClick={() => handleDecrease(obj)}
-                  />
-                  <p className="Counter__item">{count}</p>
-                  <button
-                    type="button"
-                    className="plus"
-                    aria-label="Increase quantity"
-                    onClick={() => handleIncrease(obj.id)}
-                  />
-                </div>
-
-                <p className="price__of__item">${obj.price * count}</p>
+                <p className="Counter__item">{obj.quantity}</p>
+                <button
+                  type="button"
+                  className="plus"
+                  aria-label="Increase quantity"
+                  onClick={() => onIncrease(obj.id)}
+                />
               </div>
-            );
-          })}
+
+              <p className="price__of__item">${obj.price * obj.quantity}</p>
+            </div>
+          ))}
         </div>
 
         <div className="Count__Total">

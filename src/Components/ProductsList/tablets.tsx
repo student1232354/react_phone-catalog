@@ -156,19 +156,22 @@ export const Tablets: React.FC<Props> = ({
           const inCart = cart.some(cobj => cobj.id === obj.id);
 
           return (
-            <Link
-              key={obj.id}
-              className="Brand__new__phone"
-              to={`/${obj.category}/${obj.itemId}`}
-              onClick={() => handleProductClick(obj)}
-            >
-              <img
-                className="Brand__new__phone__image"
-                src={obj.image}
-                alt={obj.itemId}
-              />
+            /* eslint-disable-next-line */
+                    <div className="Brand__new__phone">
+              <Link
+                key={obj.id}
+                to={`/${obj.category}/${obj.itemId}`}
+                style={{ textDecoration: 'none' }}
+                onClick={() => handleProductClick(obj)}
+              >
+                <img
+                  className="Brand__new__phone__image"
+                  src={obj.image}
+                  alt={obj.itemId}
+                />
 
-              <p className="Brand__new__phone__title">{obj.name}</p>
+                <p className="Brand__new__phone__title">{obj.name}</p>
+              </Link>
 
               <div className="Price">
                 <span className="this__Price">${obj.price}</span>
@@ -224,7 +227,7 @@ export const Tablets: React.FC<Props> = ({
                     >
                       <path
                         /* eslint-disable-next-line */
-                        d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
+                                d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
                         stroke="#EB5757"
                         strokeWidth="1.5"
                       />
@@ -233,7 +236,7 @@ export const Tablets: React.FC<Props> = ({
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                       <path
                         /* eslint-disable-next-line */
-                        d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
+                                d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
                         stroke="#313237"
                         strokeWidth="1.5"
                       />
@@ -241,7 +244,7 @@ export const Tablets: React.FC<Props> = ({
                   )}
                 </button>
               </div>
-            </Link>
+            </div>
           );
         })}
       </div>
