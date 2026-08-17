@@ -209,7 +209,7 @@ export const HomePageList: React.FC<Props> = ({
               <div className="ShopByCategory__image-wrapper ShopByCategory__image-wrapper--tablets">
                 <img
                   src={'/img/category-tablets.png'}
-                  alt="Tablets"
+                  alt="Tabletsss"
                   className="ShopByCategory__image"
                 />
               </div>
