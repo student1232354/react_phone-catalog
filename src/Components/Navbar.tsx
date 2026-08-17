@@ -45,7 +45,7 @@ export const Navbar: React.FC<Props> = ({ favourites = [], cart = [] }) => {
       <div className="navbar__container">
         <div className="navbar__left">
           <NavLink className="navbar__logo" to="/">
-            <img src="/img/Logo.svg" />
+            <div></div>
           </NavLink>
 
           <div className="navbar__menu">

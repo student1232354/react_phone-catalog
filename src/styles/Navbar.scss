@@ -44,13 +44,13 @@ html, body {
     align-items: center;
     text-decoration: none;
 
-    img {
+    div {
       background-image: url('/img/Logo.svg');
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
       height: 28px;
-      width: auto;
+      width: 80px;
       display: block;
     }
   }
