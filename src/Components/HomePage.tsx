@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const banners = [
   {
     id: 1,
-    img: 'img/banner-tablets.png',
+    img: 'img/banner-phones.png',
     link: '/phones',
   },
   {
