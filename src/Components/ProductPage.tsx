@@ -195,7 +195,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
     <div className="Product__Cart">
       <div className="rootline">
         <Link to="/">
-          <img src="/img/Home.svg" alt="Home" />
+          <img src="img/Home.svg" alt="Home" />
         </Link>
         <p className="root__arrow"></p>
         <Link to={`/${category}`} className="root__thing">
