@@ -195,7 +195,7 @@ export const HomePageList: React.FC<Props> = ({
             <Link to="/phones" className="ShopByCategory__card">
               <div className="ShopByCategory__image-wrapper ShopByCategory__image-wrapper--phones">
                 <img
-                  src={'/img/category-phones.png'}
+                  src={'img/category-phones.png'}
                   alt="Mobile phones"
                   className="ShopByCategory__image"
                 />
@@ -208,8 +208,8 @@ export const HomePageList: React.FC<Props> = ({
             <Link to="/tablets" className="ShopByCategory__card">
               <div className="ShopByCategory__image-wrapper ShopByCategory__image-wrapper--tablets">
                 <img
-                  src={'/img/category-tablets.png'}
-                  alt="Tabletsss"
+                  src={'img/category-tablets.png'}
+                  alt="Tablets"
                   className="ShopByCategory__image"
                 />
               </div>
@@ -221,7 +221,7 @@ export const HomePageList: React.FC<Props> = ({
             <Link to="/accessories" className="ShopByCategory__card">
               <div className="ShopByCategory__image-wrapper ShopByCategory__image-wrapper--accessories">
                 <img
-                  src={'/img/category-accessories.png'}
+                  src={'img/category-accessories.png'}
                   alt="Accessories"
                   className="ShopByCategory__image--added"
                 />
