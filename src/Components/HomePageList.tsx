@@ -116,7 +116,6 @@ export const HomePageList: React.FC<Props> = ({
                 />
 
                 <p className="Brand__new__phone__title">{obj.name}</p>
-
               </Link>
 
               <div className="Price">
@@ -265,7 +264,6 @@ export const HomePageList: React.FC<Props> = ({
             <div className="Brand__new__phone">
               <Link
                 key={obj.id}
-
                 to={`/${obj.category}/${obj.itemId}`}
                 onClick={() => handleProductClick(obj)}
                 style={{ textDecoration: 'none' }}
@@ -277,7 +275,6 @@ export const HomePageList: React.FC<Props> = ({
                 />
 
                 <p className="Brand__new__phone__title">{obj.name}</p>
-
               </Link>
 
               <div className="Price">
