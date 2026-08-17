@@ -35,9 +35,9 @@ export const Favourites: React.FC<Props> = ({
     <div className="Favourites">
       <div className="rootline">
         <Link to="/">
-          <img src="/img/Home.svg" alt="Home" />
+          <img src="img/Home.svg" alt="Home" />
         </Link>
-        <p className="root__arrow">{'>'}</p>
+        <p className="root__arrow"></p>
         <Link to="/favourites" className="root__thing">
           Favourites
         </Link>

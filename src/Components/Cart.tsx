@@ -48,7 +48,7 @@ export const Cart: React.FC<Props> = ({
     <div className="Cart">
       <div className="rootline">
         <Link to="/">
-          <img src="/img/Home.svg" alt="Home" />
+          <img src="img/Home.svg" alt="Home" />
         </Link>
         <p className="root__arrow"></p>
         <Link to="/cart" className="root__thing">
