@@ -51,6 +51,7 @@ interface ProductPageProps {
   addingObj: (product: NewModel) => void;
   selectedProduct: NewModel | null;
   setsmth?: (product: NewModel) => void;
+  thisNewName?: string;
 }
 
 const COLOR_MAP: Record<string, string> = {
@@ -74,6 +75,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
   addingObj,
   selectedProduct,
   setsmth,
+  thisNewName,
 }) => {
   const [array, setArray] = useState<NewModel[]>([]);
   const { category } = useParams<{ category: string; productId: string }>();
@@ -202,7 +204,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
           {formatCategoryName(category)}
         </Link>
         <p className="root__arrow"></p>
-        <p>{chosenobj.name}</p>
+        <p>{thisNewName ? thisNewName : chosenobj.name}</p>
       </div>
 
       {/* Кнопка  */}
@@ -280,7 +282,10 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               <div className="this__Price__Buttons">
                 {(() => {
                   const isMainCart = cart.some(
-                    item => item.id === selectedProduct.id,
+                    item =>
+                      item.id === selectedProduct.id &&
+                      item.color === activeColor &&
+                      item.capacity === activeCapacity,
                   );
 
                   return (
@@ -293,6 +298,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                           ...selectedProduct,
                           capacity: activeCapacity,
                           color: activeColor,
+                          image: activeImg,
                         });
                       }}
                     >

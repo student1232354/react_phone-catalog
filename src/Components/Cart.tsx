@@ -27,8 +27,10 @@ interface Props {
   addingChangedThings?: string;
   cart?: CartItem[];
   addingObjCart: (cart: NewModel) => void;
-  onIncrease: (id: number) => void;
-  onDecrease: (id: number) => void;
+  onIncrease: (cartId: string) => void;
+  onDecrease: (cartId: string) => void;
+  setthisNewName: (NewName: string) => void;
+  setsmth?: (product: NewModel) => void;
 }
 
 export const Cart: React.FC<Props> = ({
@@ -36,6 +38,8 @@ export const Cart: React.FC<Props> = ({
   cart = [],
   onIncrease,
   onDecrease,
+  setthisNewName,
+  setsmth,
 }) => {
   const totalPrice = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -60,47 +64,65 @@ export const Cart: React.FC<Props> = ({
 
       <div className="Count__Box">
         <div className="Count__List">
-          {cart.map(obj => (
-            <div className="one__model" key={obj.id}>
-              <button
-                type="button"
-                className="crossButton"
-                onClick={() => addingObjCart(obj)}
-                aria-label="Remove item"
-              />
+          {cart.map(obj => {
+            const newName = `${obj.name.replace(/\s+(\d+(GB|TB)|\d+mm)\s+.+$/, '')} ${obj.capacity} ${obj.color}`;
+            const cartId = `${obj.id}-${obj.color}-${obj.capacity}`;
 
-              <Link to={`/${obj.category}/${obj.itemId}`}>
-                <img className="Count__image" src={obj.image} alt={obj.name} />
-              </Link>
-
-              <Link
-                to={`/${obj.category}/${obj.itemId}`}
-                className="obj__title"
-              >
-                {obj.name.replace(/\s+(\d+(GB|TB)|\d+mm)\s+.+$/, '')}{' '}
-                {obj.capacity} {obj.color}
-              </Link>
-
-              <div className="Counter">
+            return (
+              <div className="one__model" key={cartId}>
                 <button
                   type="button"
-                  className="minus"
-                  aria-label="Decrease quantity"
-                  disabled={obj.quantity <= 1}
-                  onClick={() => onDecrease(obj.id)}
+                  className="crossButton"
+                  onClick={() => addingObjCart(obj)}
+                  aria-label="Remove item"
                 />
-                <p className="Counter__item">{obj.quantity}</p>
-                <button
-                  type="button"
-                  className="plus"
-                  aria-label="Increase quantity"
-                  onClick={() => onIncrease(obj.id)}
-                />
+
+                <Link
+                  to={`/${obj.category}/${obj.itemId}`}
+                  onClick={() => {
+                    setthisNewName(newName);
+                    if (setsmth) {
+                      setsmth(obj);
+                    }
+                  }}
+                >
+                  <img className="Count__image" src={obj.image} alt={newName} />
+                </Link>
+
+                <Link
+                  to={`/${obj.category}/${obj.itemId}`}
+                  onClick={() => {
+                    setthisNewName(newName);
+                    if (setsmth) {
+                      setsmth(obj);
+                    }
+                  }}
+                  className="obj__title"
+                >
+                  {newName}
+                </Link>
+
+                <div className="Counter">
+                  <button
+                    type="button"
+                    className="minus"
+                    aria-label="Decrease quantity"
+                    disabled={obj.quantity <= 1}
+                    onClick={() => onDecrease(cartId)}
+                  />
+                  <p className="Counter__item">{obj.quantity}</p>
+                  <button
+                    type="button"
+                    className="plus"
+                    aria-label="Increase quantity"
+                    onClick={() => onIncrease(cartId)}
+                  />
+                </div>
+
+                <p className="price__of__item">${obj.price * obj.quantity}</p>
               </div>
-
-              <p className="price__of__item">${obj.price * obj.quantity}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="Count__Total">

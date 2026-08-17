@@ -1,5 +1,5 @@
 import '../../styles/phones.scss';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import React, { useState } from 'react';
 export interface NewModel {
   id: number;
@@ -33,12 +33,22 @@ export const Phones: React.FC<Props> = ({
   addingObj,
   FavouritesA,
 }) => {
-  const [sortBy, setSortBy] = useState('');
-  const [size, setSize] = useState(4);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sortBy = searchParams.get('sort') || '';
+  const currentPage = Number(searchParams.get('page')) || 1;
+  const size = Number(searchParams.get('size')) || 4;
   const [Chuslo, setChuslo] = useState(0);
 
   const phoneProducts = array.filter(cobj => cobj.category === 'phones');
+
+  const updateParams = (newParams: Record<string, string | number>) => {
+    const params = new URLSearchParams(searchParams);
+
+    Object.entries(newParams).forEach(([key, value]) => {
+      params.set(key, String(value));
+    });
+    setSearchParams(params);
+  };
 
   const filteredArray = [...phoneProducts].sort((a, b) => {
     switch (sortBy) {
@@ -74,17 +84,15 @@ export const Phones: React.FC<Props> = ({
   };
 
   const handlePageSelect = (page: number) => {
-    setCurrentPage(page);
+    updateParams({ page });
   };
 
   const handleSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSize(Number(e.target.value));
-    setCurrentPage(1);
+    updateParams({ size: e.target.value, page: 1 });
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortBy(e.target.value);
-    setCurrentPage(1);
+    updateParams({ sort: e.target.value, page: 1 });
   };
 
   const handleProductClick = (product: NewModel) => {
@@ -194,10 +202,13 @@ export const Phones: React.FC<Props> = ({
               <div className="contract__buttons">
                 <button
                   type="button"
-                  className={inCart ? 'Added__to__Cart' : 'Add__to__cart'}
-                  onClick={e => {
-                    e.stopPropagation();
-                    addingObjCart(obj);
+                  className={inCart ? 'Added2__to__Cart' : 'Add__to__cart'}
+                  onClick={() => {
+                    addingObjCart({
+                      ...obj,
+                      itemId: obj.itemId || obj.itemId,
+                      category: obj.category || 'phones',
+                    });
                   }}
                 >
                   {inCart ? 'Added to cart' : 'Add to cart'}

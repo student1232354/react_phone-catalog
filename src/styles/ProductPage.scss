@@ -15,7 +15,10 @@ $color-white: #fff;
   justify-content: center;
   width: 260px;
   height: 48px;
-  padding: 0 16px;
+  min-height: 47px;
+  max-height: 48px;
+  max-width: 260px;
+  min-width: 259px;
   box-sizing: border-box;
   background-color: $color-white;
   border: 1px solid $color-elements;
@@ -465,9 +468,10 @@ $color-white: #fff;
     margin-bottom: 32px;
 
     .cart__button {
-      flex: 1;
       width: 260px;
       height: 48px;
+      max-width: 260px;
+      min-width: 259px;
       background-color: $primary-color;
       color: $white;
       font-size: 14px;
@@ -560,12 +564,6 @@ $color-white: #fff;
     .section {
       max-height: 480px;
     }
-
-    .this__Price__Buttons {
-      .cart__button {
-        width: auto;
-      }
-    }
   }
 }
 
@@ -639,4 +637,9 @@ $color-white: #fff;
   .visuals {
     margin-bottom: 20px;
   }
+
+      .cart__button {
+      width: 265px;
+      height: 48px;
+      }
 }

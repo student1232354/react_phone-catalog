@@ -34,10 +34,14 @@ export interface CartItem extends NewModel {
 }
 
 export const AppContent: React.FC = () => {
+  const [thisNewName, setthisNewName] = useState<string>('');
   const [models, setModels] = useState<NewModel[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<NewModel | null>(null);
   const [FavouritesA, setFavouritesA] = useState<NewModel[]>([]);
   const [cart, setcart] = useState<CartItem[]>([]);
+
+  const getCartId = (item: NewModel) =>
+    `${item.id}-${item.color}-${item.capacity}`;
 
   const addingObj = (obj: NewModel) => {
     setFavouritesA(prevArray => {
@@ -51,19 +55,23 @@ export const AppContent: React.FC = () => {
     });
   };
 
-  const handleIncrease = (id: number) => {
+  const handleIncrease = (cartId: string) => {
     setcart(prev =>
       prev.map(item =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
+        getCartId(item) === cartId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
       ),
     );
   };
 
-  const handleDecrease = (id: number) => {
+  const handleDecrease = (cartId: string) => {
     setcart(prev =>
       prev
         .map(item =>
-          item.id === id ? { ...item, quantity: item.quantity - 1 } : item,
+          getCartId(item) === cartId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item,
         )
         .filter(item => item.quantity > 0),
     );
@@ -71,10 +79,11 @@ export const AppContent: React.FC = () => {
 
   const addingObjCart = (obj: NewModel) => {
     setcart(prevArray => {
-      const exists = prevArray.some(cobj => cobj.id === obj.id);
+      const uniqueCartId = getCartId(obj);
+      const exists = prevArray.some(cobj => getCartId(cobj) === uniqueCartId);
 
       if (exists) {
-        return prevArray.filter(cobj => cobj.id !== obj.id);
+        return prevArray.filter(cobj => getCartId(cobj) !== uniqueCartId);
       } else {
         return [...prevArray, { ...obj, quantity: 1 }];
       }
@@ -165,6 +174,7 @@ export const AppContent: React.FC = () => {
                     addingObj={addingObj}
                     selectedProduct={selectedProduct}
                     setsmth={product => setSelectedProduct(product)}
+                    thisNewName={thisNewName}
                   />
                 }
               />
@@ -188,6 +198,8 @@ export const AppContent: React.FC = () => {
                     onDecrease={handleDecrease}
                     addingObjCart={addingObjCart}
                     cart={cart}
+                    setthisNewName={setthisNewName}
+                    setsmth={product => setSelectedProduct(product)}
                   />
                 }
               />

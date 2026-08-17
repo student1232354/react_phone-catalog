@@ -140,7 +140,7 @@ export const HomePageList: React.FC<Props> = ({
               <div className="contract__buttons">
                 <button
                   type="button"
-                  className={isChosen ? 'Added__to__Cart' : 'Add__to__cart'}
+                  className={isChosen ? 'Added2__to__Cart' : 'Add__to__cart'}
                   onClick={e => {
                     e.stopPropagation();
                     addingObjCart(obj);
@@ -299,7 +299,7 @@ export const HomePageList: React.FC<Props> = ({
               <div className="contract__buttons">
                 <button
                   type="button"
-                  className={isChosen ? 'Added__to__Cart' : 'Add__to__cart'}
+                  className={isChosen ? 'Added2__to__Cart' : 'Add__to__cart'}
                   onClick={e => {
                     e.stopPropagation();
                     addingObjCart(obj);
