@@ -3,7 +3,7 @@ import '../styles/NavbarFooter.scss';
 
 export const NavbarFooter: React.FC = () => {
   return (
-    <>
+    <div data-cy="app">
       <nav
         data-cy="nav"
         className="navbar__footer"
@@ -45,6 +45,6 @@ export const NavbarFooter: React.FC = () => {
           ></button>
         </div>
       </nav>
-    </>
+    </div>
   );
 };
