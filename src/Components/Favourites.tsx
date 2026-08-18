@@ -117,6 +117,7 @@ export const Favourites: React.FC<Props> = ({
                       />
                     </svg>
                   ) : (
+                    /* eslint-disable-next-line */
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                       <path
                         /* eslint-disable-next-line */
