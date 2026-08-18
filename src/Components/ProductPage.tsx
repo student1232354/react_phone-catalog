@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import '../styles/ProductPage.scss';
 
@@ -49,10 +49,14 @@ interface ProductPageProps {
   addingObjCart: (product: NewModel) => void;
   FavouritesA: NewModel[];
   addingObj: (product: NewModel) => void;
-  selectedProduct: NewModel | null;
   setsmth?: (product: NewModel) => void;
-  thisNewName?: string;
 }
+
+const CATEGORY_FILES: Record<string, string> = {
+  phones: 'api/phones.json',
+  tablets: 'api/tablets.json',
+  accessories: 'api/accessories.json',
+};
 
 const COLOR_MAP: Record<string, string> = {
   black: '#1c1c1e',
@@ -73,12 +77,19 @@ export const ProductPage: React.FC<ProductPageProps> = ({
   addingObjCart,
   FavouritesA,
   addingObj,
-  selectedProduct,
   setsmth,
-  thisNewName,
 }) => {
+  const { category, productId } = useParams<{
+    category: string;
+    productId: string;
+  }>();
+
+  const navigate = useNavigate();
+
+  const [categoryData, setCategoryData] = useState<ProductDetails[]>([]);
+  const [selectedImage, setSelectedImage] = useState<string>('');
   const [array, setArray] = useState<NewModel[]>([]);
-  const { category } = useParams<{ category: string; productId: string }>();
+  const [Chuslo, setChuslo] = useState(0);
 
   const formatCategoryName = (str?: string) => {
     if (!str) {
@@ -89,22 +100,43 @@ export const ProductPage: React.FC<ProductPageProps> = ({
   };
 
   useEffect(() => {
+    if (!category || !CATEGORY_FILES[category]) {
+      return;
+    }
+
+    fetch(CATEGORY_FILES[category])
+      .then(response => response.json())
+      .then((data: ProductDetails[]) => {
+        setCategoryData(data);
+      })
+      /* eslint-disable-next-line */
+      .catch(error => console.error('Error fetching details:', error));
+  }, [category]);
+
+  useEffect(() => {
     fetch('api/products.json')
       .then(response => response.json())
       .then((data: NewModel[]) => {
         setArray(data);
       })
       /* eslint-disable-next-line */
-      .catch(error => console.error('Error fetching details:', error));
+      .catch(error => console.error('Error fetching products:', error));
   }, []);
 
-  const [chosenobj, setChosenobj] = useState<ProductDetails | null>(null);
-  const [selectedImage, setSelectedImage] = useState<string>('');
-  const [selectedColor, setSelectedColor] = useState<string>('');
-  const [selectedCapacity, setSelectedCapacity] = useState<string>('');
-  const [Chuslo, setChuslo] = useState(0);
+  const chosenobj = useMemo(
+    () => categoryData.find(item => item.id === productId) || null,
+    [categoryData, productId],
+  );
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (chosenobj?.images?.length) {
+      setSelectedImage(chosenobj.images[0]);
+    }
+  }, [chosenobj]);
+
   const sortedToNewArray = [...array].sort((a, b) => b.year - a.year);
-  const navigate = useNavigate();
 
   const handlePrev = () => {
     setChuslo(prev => Math.max(0, prev - 4));
@@ -115,67 +147,6 @@ export const ProductPage: React.FC<ProductPageProps> = ({
       setChuslo(prev => prev + 4);
     }
   };
-
-  useEffect(() => {
-    if (!selectedProduct) {
-      return;
-    }
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    if (selectedProduct.category === 'phones') {
-      fetch('api/phones.json')
-        .then(response => response.json())
-        .then((data: ProductDetails[]) => {
-          const found = data.find(item => item.id === selectedProduct.itemId);
-
-          setChosenobj(found || null);
-
-          if (found?.images?.length) {
-            setSelectedImage(found.images[0]);
-          }
-        })
-        /* eslint-disable-next-line */
-        .catch(error => console.error('Error fetching details:', error));
-    } else if (selectedProduct.category === 'accessories') {
-      fetch('api/accessories.json')
-        .then(response => response.json())
-        .then((data: ProductDetails[]) => {
-          const found = data.find(item => item.id === selectedProduct.itemId);
-
-          setChosenobj(found || null);
-
-          if (found?.images?.length) {
-            setSelectedImage(found.images[0]);
-          }
-        })
-        /* eslint-disable-next-line */
-        .catch(error => console.error('Error fetching details:', error));
-    } else if (selectedProduct.category === 'tablets') {
-      fetch('api/tablets.json')
-        .then(response => response.json())
-        .then((data: ProductDetails[]) => {
-          const found = data.find(item => item.id === selectedProduct.itemId);
-
-          setChosenobj(found || null);
-
-          if (found?.images?.length) {
-            setSelectedImage(found.images[0]);
-          }
-        })
-        /* eslint-disable-next-line */
-        .catch(error => console.error('Error fetching details:', error));
-    }
-  }, [selectedProduct]);
-
-  if (!selectedProduct) {
-    return (
-      <div className="Product__Cart">
-        <h2>No product selected</h2>
-        <Link to="/phones">Back to phones</Link>
-      </div>
-    );
-  }
 
   if (!chosenobj) {
     return <div className="Product__Cart">Loading details...</div>;
@@ -190,8 +161,52 @@ export const ProductPage: React.FC<ProductPageProps> = ({
   };
 
   const activeImg = selectedImage || chosenobj.images[0];
-  const activeColor = selectedColor || chosenobj.color;
-  const activeCapacity = selectedCapacity || chosenobj.capacity;
+
+  const handleColorChange = (newColor: string) => {
+    const match = categoryData.find(
+      item =>
+        item.namespaceId === chosenobj.namespaceId &&
+        item.capacity === chosenobj.capacity &&
+        item.color === newColor,
+    );
+
+    if (match) {
+      navigate(`/${category}/${match.id}`);
+    }
+  };
+
+  const handleCapacityChange = (newCapacity: string) => {
+    const match = categoryData.find(
+      item =>
+        item.namespaceId === chosenobj.namespaceId &&
+        item.color === chosenobj.color &&
+        item.capacity === newCapacity,
+    );
+
+    if (match) {
+      navigate(`/${category}/${match.id}`);
+    }
+  };
+
+  const buildNewModel = (): NewModel => ({
+    id: Number(chosenobj.id.replace(/\D/g, '')) || 0,
+    category: chosenobj.category,
+    itemId: chosenobj.id,
+    name: chosenobj.name,
+    fullPrice: chosenobj.priceRegular,
+    price: chosenobj.priceDiscount,
+    screen: chosenobj.screen,
+    capacity: chosenobj.capacity,
+    color: chosenobj.color,
+    ram: chosenobj.ram,
+    year: 0,
+    image: activeImg,
+    selectedCapacity: chosenobj.capacity,
+    selectedColor: chosenobj.color,
+  });
+
+  const isMainCart = cart.some(item => item.itemId === chosenobj.id);
+  const isMainFavorite = FavouritesA.some(item => item.itemId === chosenobj.id);
 
   return (
     <div className="Product__Cart">
@@ -204,19 +219,17 @@ export const ProductPage: React.FC<ProductPageProps> = ({
           {formatCategoryName(category)}
         </Link>
         <p className="root__arrow"></p>
-        <p>{thisNewName ? thisNewName : chosenobj.name}</p>
+        <p>{chosenobj.name}</p>
       </div>
 
       {/* Кнопка  */}
-      <Link to="/phones" className="Back__Name">
+      <Link to={`/${category}`} className="Back__Name">
         <span className="root__arrow__back"></span>
         <p>Back</p>
       </Link>
 
       <div className="visuals">
-        <p className="visuals__title">
-          {thisNewName ? thisNewName : chosenobj.name}
-        </p>
+        <p className="visuals__title">{chosenobj.name}</p>
 
         <div className="visuals__info">
           <div className="All__photos">
@@ -243,13 +256,13 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 <button
                   key={colorItem}
                   className={`colors__button--${colorItem} ${
-                    colorItem === activeColor ? 'is-active' : ''
+                    colorItem === chosenobj.color ? 'is-active' : ''
                   }`}
                   style={{
                     backgroundColor: COLOR_MAP[colorItem] || colorItem,
                   }}
                   aria-label={colorItem}
-                  onClick={() => setSelectedColor(colorItem)}
+                  onClick={() => handleColorChange(colorItem)}
                 ></button>
               ))}
             </div>
@@ -261,9 +274,9 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                 <button
                   key={cap}
                   className={`capacity__buttons ${
-                    cap === activeCapacity ? 'is-active' : ''
+                    cap === chosenobj.capacity ? 'is-active' : ''
                   }`}
-                  onClick={() => setSelectedCapacity(cap)}
+                  onClick={() => handleCapacityChange(cap)}
                 >
                   {cap}
                 </button>
@@ -280,78 +293,43 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               </div>
 
               <div className="this__Price__Buttons">
-                {(() => {
-                  const isMainCart = cart.some(
-                    item =>
-                      item.id === selectedProduct.id &&
-                      item.color === activeColor &&
-                      item.capacity === activeCapacity,
-                  );
+                <button
+                  className={isMainCart ? 'Added__to__Cart' : 'cart__button'}
+                  onClick={() => addingObjCart(buildNewModel())}
+                >
+                  {isMainCart ? 'Added to cart' : 'Add to cart'}
+                </button>
 
-                  return (
-                    <button
-                      className={
-                        isMainCart ? 'Added__to__Cart' : 'cart__button'
-                      }
-                      onClick={() => {
-                        addingObjCart({
-                          ...selectedProduct,
-                          capacity: activeCapacity,
-                          color: activeColor,
-                          selectedCapacity: activeCapacity,
-                          selectedColor: activeColor,
-                          image: activeImg,
-                        });
-                      }}
+                <button
+                  className="love__button"
+                  onClick={() => addingObj(buildNewModel())}
+                  aria-label="Add to favorites"
+                >
+                  {isMainFavorite ? (
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="#EB5757"
                     >
-                      {isMainCart ? 'Added to cart' : 'Add to cart'}
-                    </button>
-                  );
-                })()}
-
-                {(() => {
-                  const isMainFavorite = FavouritesA.some(
-                    item => item.id === selectedProduct.id,
-                  );
-
-                  return (
-                    <button
-                      className="love__button"
-                      onClick={() => addingObj(selectedProduct)}
-                      aria-label="Add to favorites"
-                    >
-                      {isMainFavorite ? (
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="#EB5757"
-                        >
-                          <path
-                            /* eslint-disable-next-line */
-                            d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
-                            stroke="#EB5757"
-                            strokeWidth="1.5"
-                          />
-                        </svg>
-                      ) : (
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                        >
-                          <path
-                            /* eslint-disable-next-line */
-                            d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
-                            stroke="#313237"
-                            strokeWidth="1.5"
-                          />
-                        </svg>
-                      )}
-                    </button>
-                  );
-                })()}
+                      <path
+                        /* eslint-disable-next-line */
+                        d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
+                        stroke="#EB5757"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  ) : (
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        /* eslint-disable-next-line */
+                        d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
+                        stroke="#313237"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  )}
+                </button>
               </div>
               <ul className="visuals__additional__List">
                 <li className="part__List">
@@ -452,7 +430,9 @@ export const ProductPage: React.FC<ProductPageProps> = ({
           ></button>
           <button
             className={
-              Chuslo === 194 ? 'Button__another__design' : 'Button__List__this'
+              Chuslo + 4 >= sortedToNewArray.length
+                ? 'Button__another__design'
+                : 'Button__List__this'
             }
             onClick={() => handleNext()}
           ></button>
@@ -464,10 +444,8 @@ export const ProductPage: React.FC<ProductPageProps> = ({
           const isChosen = cart?.some(cobj => cobj.id === obj.id);
 
           return (
-            /* eslint-disable-next-line */
-            <div className="Brand__new__phone">
+            <div className="Brand__new__phone" key={obj.id}>
               <Link
-                key={obj.id}
                 to={`/${obj.category}/${obj.itemId}`}
                 onClick={() => handleProductClick(obj)}
                 style={{ textDecoration: 'none' }}

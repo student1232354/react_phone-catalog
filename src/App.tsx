@@ -34,7 +34,6 @@ export interface CartItem extends NewModel {
 }
 
 export const AppContent: React.FC = () => {
-  const [thisNewName, setthisNewName] = useState<string>('');
   const [models, setModels] = useState<NewModel[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<NewModel | null>(null);
   const [FavouritesA, setFavouritesA] = useState<NewModel[]>([]);
@@ -102,7 +101,7 @@ export const AppContent: React.FC = () => {
 
   return (
     <>
-      <div data-cy="app">
+      <div className="app" data-cy="app">
         {/* eslint-disable-next-line */}
         <Navbar cart={cart} favourites={FavouritesA} />
         <main className="section">
@@ -172,9 +171,7 @@ export const AppContent: React.FC = () => {
                     addingObjCart={addingObjCart}
                     FavouritesA={FavouritesA}
                     addingObj={addingObj}
-                    selectedProduct={selectedProduct}
                     setsmth={product => setSelectedProduct(product)}
-                    thisNewName={thisNewName}
                   />
                 }
               />
@@ -198,7 +195,6 @@ export const AppContent: React.FC = () => {
                     onDecrease={handleDecrease}
                     addingObjCart={addingObjCart}
                     cart={cart}
-                    setthisNewName={setthisNewName}
                     setsmth={product => setSelectedProduct(product)}
                   />
                 }

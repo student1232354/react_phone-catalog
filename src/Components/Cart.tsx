@@ -29,7 +29,6 @@ interface Props {
   addingObjCart: (cart: NewModel) => void;
   onIncrease: (cartId: string) => void;
   onDecrease: (cartId: string) => void;
-  setthisNewName: (NewName: string) => void;
   setsmth?: (product: NewModel) => void;
 }
 
@@ -38,7 +37,6 @@ export const Cart: React.FC<Props> = ({
   cart = [],
   onIncrease,
   onDecrease,
-  setthisNewName,
   setsmth,
 }) => {
   const totalPrice = cart.reduce(
@@ -66,10 +64,9 @@ export const Cart: React.FC<Props> = ({
         <div className="Count__List">
           {cart.map(obj => {
             const newName = `${obj.name.replace(/\s+(\d+(GB|TB)|\d+mm)\s+.+$/, '')} ${obj.capacity} ${obj.color}`;
-            const cartId = `${obj.id}-${obj.selectedColor}-${obj.selectedCapacity}`;
 
             return (
-              <div className="one__model" key={cartId}>
+              <div className="one__model" key={obj.itemId}>
                 <button
                   type="button"
                   className="crossButton"
@@ -78,9 +75,8 @@ export const Cart: React.FC<Props> = ({
                 />
 
                 <Link
-                  to={`/${obj.category}/${obj.color}-${obj.capacity}`}
+                  to={`/${obj.category}/${obj.itemId}`}
                   onClick={() => {
-                    setthisNewName(newName);
                     if (setsmth) {
                       setsmth(obj);
                     }
@@ -90,9 +86,8 @@ export const Cart: React.FC<Props> = ({
                 </Link>
 
                 <Link
-                  to={`/${obj.category}/${cartId}`}
+                  to={`/${obj.category}/${obj.itemId}`}
                   onClick={() => {
-                    setthisNewName(newName);
                     if (setsmth) {
                       setsmth(obj);
                     }
@@ -108,14 +103,14 @@ export const Cart: React.FC<Props> = ({
                     className="minus"
                     aria-label="Decrease quantity"
                     disabled={obj.quantity <= 1}
-                    onClick={() => onDecrease(cartId)}
+                    onClick={() => onDecrease(obj.itemId)}
                   />
                   <p className="Counter__item">{obj.quantity}</p>
                   <button
                     type="button"
                     className="plus"
                     aria-label="Increase quantity"
-                    onClick={() => onIncrease(cartId)}
+                    onClick={() => onIncrease(obj.itemId)}
                   />
                 </div>
 
