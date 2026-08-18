@@ -298,6 +298,8 @@ export const ProductPage: React.FC<ProductPageProps> = ({
                           ...selectedProduct,
                           capacity: activeCapacity,
                           color: activeColor,
+                          selectedCapacity: activeCapacity,
+                          selectedColor: activeColor,
                           image: activeImg,
                         });
                       }}

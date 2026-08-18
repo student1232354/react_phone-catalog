@@ -19,6 +19,10 @@ export interface NewModel {
   selectedColor?: string;
 }
 
+const CARD_WIDTH = 272;
+const CARD_GAP = 20;
+const STEP = CARD_WIDTH + CARD_GAP;
+
 interface Props {
   cart: NewModel[];
   addingObjCart: (product: NewModel) => void;
@@ -97,95 +101,105 @@ export const HomePageList: React.FC<Props> = ({
         </div>
       </div>
 
-      <div className="Brand__new__List">
-        {sortedToNewArray.slice(chusloNew, chusloNew + 4).map(obj => {
-          const isFavorite = FavouritesA.some(cobj => cobj.id === obj.id);
-          const isChosen = cart?.some(cobj => cobj.id === obj.id);
+      <div className="Brand__new__Slider__Wrapper">
+        <div
+          className="Brand__new__List"
+          style={{ transform: `translateX(-${chusloNew * STEP}px)` }}
+        >
+          {sortedToNewArray.map(obj => {
+            const isFavorite = FavouritesA.some(cobj => cobj.id === obj.id);
+            const isChosen = cart?.some(cobj => cobj.id === obj.id);
 
-          return (
-            <div className="Brand__new__phone" key={obj.id}>
-              <Link
-                to={`/${obj.category}/${obj.itemId}`}
-                onClick={() => handleProductClick(obj)}
-                style={{ textDecoration: 'none' }}
-              >
-                <img
-                  className="Brand__new__phone__image"
-                  src={obj.image}
-                  alt={obj.itemId}
-                />
-
-                <p className="Brand__new__phone__title">{obj.name}</p>
-              </Link>
-
-              <div className="Price">
-                <span className="this__Price">${obj.price}</span>
-              </div>
-
-              <div className="phone__Line"></div>
-              <ul className="charasteristics">
-                <li className="each">
-                  <span className="part__of__List">Screen</span>
-                  <span className="part__of__char">{obj.screen}</span>
-                </li>
-                <li className="each">
-                  <span className="part__of__List">Capacity</span>
-                  <span className="part__of__char">{obj.capacity}</span>
-                </li>
-                <li className="each">
-                  <span className="part__of__List">RAM</span>
-                  <span className="part__of__char">{obj.ram}</span>
-                </li>
-              </ul>
-              <div className="contract__buttons">
-                <button
-                  type="button"
-                  className={isChosen ? 'Added2__to__Cart' : 'Add__to__cart'}
-                  onClick={e => {
-                    e.stopPropagation();
-                    addingObjCart(obj);
-                  }}
+            return (
+              <div className="Brand__new__phone" key={obj.id}>
+                <Link
+                  to={`/${obj.category}/${obj.itemId}`}
+                  onClick={() => handleProductClick(obj)}
+                  style={{ textDecoration: 'none' }}
                 >
-                  {isChosen ? 'Added to cart' : 'Add to cart'}
-                </button>
-                <button
-                  type="button"
-                  className="heart"
-                  aria-label="Add to favorites"
-                  onClick={e => {
-                    e.stopPropagation();
-                    addingObj?.(obj);
-                  }}
-                >
-                  {isFavorite ? (
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="#EB5757"
-                    >
-                      <path
-                        /* eslint-disable-next-line */
-                        d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
-                        stroke="#EB5757"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
-                  ) : (
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path
-                        /* eslint-disable-next-line */
-                        d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
-                        stroke="#313237"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
-                  )}
-                </button>
+                  <img
+                    className="Brand__new__phone__image"
+                    src={obj.image}
+                    alt={obj.itemId}
+                  />
+
+                  <p className="Brand__new__phone__title">{obj.name}</p>
+                </Link>
+
+                <div className="Price">
+                  <span className="this__Price">${obj.price}</span>
+                </div>
+
+                <div className="phone__Line"></div>
+                <ul className="charasteristics">
+                  <li className="each">
+                    <span className="part__of__List">Screen</span>
+                    <span className="part__of__char">{obj.screen}</span>
+                  </li>
+                  <li className="each">
+                    <span className="part__of__List">Capacity</span>
+                    <span className="part__of__char">{obj.capacity}</span>
+                  </li>
+                  <li className="each">
+                    <span className="part__of__List">RAM</span>
+                    <span className="part__of__char">{obj.ram}</span>
+                  </li>
+                </ul>
+                <div className="contract__buttons">
+                  <button
+                    type="button"
+                    className={isChosen ? 'Added2__to__Cart' : 'Add__to__cart'}
+                    onClick={e => {
+                      e.stopPropagation();
+                      addingObjCart(obj);
+                    }}
+                  >
+                    {isChosen ? 'Added to cart' : 'Add to cart'}
+                  </button>
+                  <button
+                    type="button"
+                    className="heart"
+                    aria-label="Add to favorites"
+                    onClick={e => {
+                      e.stopPropagation();
+                      addingObj?.(obj);
+                    }}
+                  >
+                    {isFavorite ? (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="#EB5757"
+                      >
+                        <path
+                          /* eslint-disable-next-line */
+                          d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
+                          stroke="#EB5757"
+                          strokeWidth="1.5"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          /* eslint-disable-next-line */
+                          d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
+                          stroke="#313237"
+                          strokeWidth="1.5"
+                        />
+                      </svg>
+                    )}
+                  </button>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
       <div className="Shop__by__Category">
@@ -255,96 +269,105 @@ export const HomePageList: React.FC<Props> = ({
         </div>
       </div>
 
-      <div className="Brand__new__List">
-        {sortedToHotArray.slice(chusloHot, chusloHot + 4).map(obj => {
-          const isFavorite = FavouritesA.some(cobj => cobj.id === obj.id);
-          const isChosen = cart?.some(cobj => cobj.id === obj.id);
+      <div className="Brand__new__Slider__Wrapper">
+        <div
+          className="Brand__new__List"
+          style={{ transform: `translateX(-${chusloHot * STEP}px)` }}
+        >
+          {sortedToHotArray.map(obj => {
+            const isFavorite = FavouritesA.some(cobj => cobj.id === obj.id);
+            const isChosen = cart?.some(cobj => cobj.id === obj.id);
 
-          return (
-            <div className="Brand__new__phone">
-              <Link
-                key={obj.id}
-                to={`/${obj.category}/${obj.itemId}`}
-                onClick={() => handleProductClick(obj)}
-                style={{ textDecoration: 'none' }}
-              >
-                <img
-                  className="Brand__new__phone__image"
-                  src={obj.image}
-                  alt={obj.itemId}
-                />
-
-                <p className="Brand__new__phone__title">{obj.name}</p>
-              </Link>
-
-              <div className="Price">
-                <span className="this__Price">${obj.price}</span>
-              </div>
-
-              <div className="phone__Line"></div>
-              <ul className="charasteristics">
-                <li className="each">
-                  <span className="part__of__List">Screen</span>
-                  <span className="part__of__char">{obj.screen}</span>
-                </li>
-                <li className="each">
-                  <span className="part__of__List">Capacity</span>
-                  <span className="part__of__char">{obj.capacity}</span>
-                </li>
-                <li className="each">
-                  <span className="part__of__List">RAM</span>
-                  <span className="part__of__char">{obj.ram}</span>
-                </li>
-              </ul>
-              <div className="contract__buttons">
-                <button
-                  type="button"
-                  className={isChosen ? 'Added2__to__Cart' : 'Add__to__cart'}
-                  onClick={e => {
-                    e.stopPropagation();
-                    addingObjCart(obj);
-                  }}
+            return (
+              <div className="Brand__new__phone" key={obj.id}>
+                <Link
+                  to={`/${obj.category}/${obj.itemId}`}
+                  onClick={() => handleProductClick(obj)}
+                  style={{ textDecoration: 'none' }}
                 >
-                  {isChosen ? 'Added to cart' : 'Add to cart'}
-                </button>
-                <button
-                  type="button"
-                  className="heart"
-                  aria-label="Add to favorites"
-                  onClick={e => {
-                    e.stopPropagation();
-                    addingObj?.(obj);
-                  }}
-                >
-                  {isFavorite ? (
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="#EB5757"
-                    >
-                      <path
-                        /* eslint-disable-next-line */
-                        d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
-                        stroke="#EB5757"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
-                  ) : (
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path
-                        /* eslint-disable-next-line */
-                        d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
-                        stroke="#313237"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
-                  )}
-                </button>
+                  <img
+                    className="Brand__new__phone__image"
+                    src={obj.image}
+                    alt={obj.itemId}
+                  />
+
+                  <p className="Brand__new__phone__title">{obj.name}</p>
+                </Link>
+
+                <div className="Price">
+                  <span className="this__Price">${obj.price}</span>
+                </div>
+
+                <div className="phone__Line"></div>
+                <ul className="charasteristics">
+                  <li className="each">
+                    <span className="part__of__List">Screen</span>
+                    <span className="part__of__char">{obj.screen}</span>
+                  </li>
+                  <li className="each">
+                    <span className="part__of__List">Capacity</span>
+                    <span className="part__of__char">{obj.capacity}</span>
+                  </li>
+                  <li className="each">
+                    <span className="part__of__List">RAM</span>
+                    <span className="part__of__char">{obj.ram}</span>
+                  </li>
+                </ul>
+                <div className="contract__buttons">
+                  <button
+                    type="button"
+                    className={isChosen ? 'Added2__to__Cart' : 'Add__to__cart'}
+                    onClick={e => {
+                      e.stopPropagation();
+                      addingObjCart(obj);
+                    }}
+                  >
+                    {isChosen ? 'Added to cart' : 'Add to cart'}
+                  </button>
+                  <button
+                    type="button"
+                    className="heart"
+                    aria-label="Add to favorites"
+                    onClick={e => {
+                      e.stopPropagation();
+                      addingObj?.(obj);
+                    }}
+                  >
+                    {isFavorite ? (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="#EB5757"
+                      >
+                        <path
+                          /* eslint-disable-next-line */
+                          d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
+                          stroke="#EB5757"
+                          strokeWidth="1.5"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          /* eslint-disable-next-line */
+                          d="M8 13.5L2.5 8C1 6.5 1 4 2.5 2.5C4 1 6.5 1 8 3C9.5 1 12 1 13.5 2.5C15 4 15 6.5 13.5 8L8 13.5Z"
+                          stroke="#313237"
+                          strokeWidth="1.5"
+                        />
+                      </svg>
+                    )}
+                  </button>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

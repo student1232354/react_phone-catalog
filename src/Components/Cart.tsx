@@ -66,7 +66,7 @@ export const Cart: React.FC<Props> = ({
         <div className="Count__List">
           {cart.map(obj => {
             const newName = `${obj.name.replace(/\s+(\d+(GB|TB)|\d+mm)\s+.+$/, '')} ${obj.capacity} ${obj.color}`;
-            const cartId = `${obj.id}-${obj.color}-${obj.capacity}`;
+            const cartId = `${obj.id}-${obj.selectedColor}-${obj.selectedCapacity}`;
 
             return (
               <div className="one__model" key={cartId}>
@@ -78,7 +78,7 @@ export const Cart: React.FC<Props> = ({
                 />
 
                 <Link
-                  to={`/${obj.category}/${obj.itemId}`}
+                  to={`/${obj.category}/${obj.color}-${obj.capacity}`}
                   onClick={() => {
                     setthisNewName(newName);
                     if (setsmth) {
@@ -90,7 +90,7 @@ export const Cart: React.FC<Props> = ({
                 </Link>
 
                 <Link
-                  to={`/${obj.category}/${obj.itemId}`}
+                  to={`/${obj.category}/${cartId}`}
                   onClick={() => {
                     setthisNewName(newName);
                     if (setsmth) {

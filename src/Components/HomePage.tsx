@@ -57,11 +57,11 @@ export const HomePage: React.FC<Props> = ({
   const [photos, setPhotos] = useState<number>(0);
 
   const handlePrev = () => {
-    setPhotos(prev => (prev > 0 ? prev - 1 : prev));
+    setPhotos(prev => (prev > 0 ? prev - 1 : prev + 2));
   };
 
   const handleNext = () => {
-    setPhotos(prev => (prev < banners.length - 1 ? prev + 1 : prev));
+    setPhotos(prev => (prev < banners.length - 1 ? prev + 1 : prev - 2));
   };
 
   return (
