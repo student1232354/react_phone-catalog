@@ -215,7 +215,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
 
       <div className="visuals">
         <p className="visuals__title">
-          {chosenobj.namespaceId.replaceAll('-', ' ')}
+          {thisNewName ? thisNewName : chosenobj.name}
         </p>
 
         <div className="visuals__info">
