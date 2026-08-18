@@ -310,7 +310,9 @@ export const HomePageList: React.FC<Props> = ({
 
                 <div className="Price">
                   <span className="this__Price">${obj.price}</span>
-                  <span className="this__Discount">${obj.fullPrice}</span>
+                  <span className="Price__without__Discount">
+                    ${obj.fullPrice}
+                  </span>
                 </div>
 
                 <div className="phone__Line"></div>
