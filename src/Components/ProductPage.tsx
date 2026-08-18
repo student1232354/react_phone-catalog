@@ -440,8 +440,10 @@ export const ProductPage: React.FC<ProductPageProps> = ({
       </div>
       <div className="Brand__new__List">
         {sortedToNewArray.slice(Chuslo, Chuslo + 4).map(obj => {
-          const isFavorite = FavouritesA.some(cobj => cobj.id === obj.id);
-          const isChosen = cart?.some(cobj => cobj.id === obj.id);
+          const isFavorite = FavouritesA.some(
+            cobj => cobj.itemId === obj.itemId,
+          );
+          const isChosen = cart?.some(cobj => cobj.itemId === obj.itemId);
 
           return (
             <div className="Brand__new__phone" key={obj.id}>
@@ -481,7 +483,7 @@ export const ProductPage: React.FC<ProductPageProps> = ({
               <div className="contract__buttons">
                 <button
                   type="button"
-                  className={isChosen ? 'Added__to__Cart' : 'Add__to__cart'}
+                  className={isChosen ? 'Added2__to__Cart' : 'Add__to__cart'}
                   onClick={e => {
                     e.stopPropagation();
                     addingObjCart(obj);

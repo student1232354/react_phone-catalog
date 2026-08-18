@@ -39,15 +39,14 @@ export const AppContent: React.FC = () => {
   const [FavouritesA, setFavouritesA] = useState<NewModel[]>([]);
   const [cart, setcart] = useState<CartItem[]>([]);
 
-  const getCartId = (item: NewModel) =>
-    `${item.id}-${item.color}-${item.capacity}`;
+  const getCartId = (item: NewModel) => item.itemId;
 
   const addingObj = (obj: NewModel) => {
     setFavouritesA(prevArray => {
-      const Existfb = prevArray.some(cobj => cobj.id === obj.id);
+      const Existfb = prevArray.some(cobj => cobj.itemId === obj.itemId);
 
       if (Existfb) {
-        return prevArray.filter(cobj => cobj.id !== obj.id);
+        return prevArray.filter(cobj => cobj.itemId !== obj.itemId);
       } else {
         return [...prevArray, obj];
       }
@@ -78,11 +77,10 @@ export const AppContent: React.FC = () => {
 
   const addingObjCart = (obj: NewModel) => {
     setcart(prevArray => {
-      const uniqueCartId = getCartId(obj);
-      const exists = prevArray.some(cobj => getCartId(cobj) === uniqueCartId);
+      const exists = prevArray.some(cobj => cobj.itemId === obj.itemId);
 
       if (exists) {
-        return prevArray.filter(cobj => getCartId(cobj) !== uniqueCartId);
+        return prevArray.filter(cobj => cobj.itemId !== obj.itemId);
       } else {
         return [...prevArray, { ...obj, quantity: 1 }];
       }
@@ -195,6 +193,7 @@ export const AppContent: React.FC = () => {
                     onDecrease={handleDecrease}
                     addingObjCart={addingObjCart}
                     cart={cart}
+                    setcart={setcart}
                     setsmth={product => setSelectedProduct(product)}
                   />
                 }

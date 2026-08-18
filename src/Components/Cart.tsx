@@ -26,6 +26,7 @@ export interface CartItem extends NewModel {
 interface Props {
   addingChangedThings?: string;
   cart?: CartItem[];
+  setcart: (cart: CartItem[]) => void;
   addingObjCart: (cart: NewModel) => void;
   onIncrease: (cartId: string) => void;
   onDecrease: (cartId: string) => void;
@@ -35,6 +36,7 @@ interface Props {
 export const Cart: React.FC<Props> = ({
   addingObjCart,
   cart = [],
+  setcart,
   onIncrease,
   onDecrease,
   setsmth,
@@ -124,7 +126,17 @@ export const Cart: React.FC<Props> = ({
           <p className="Count__dollar">${totalPrice}</p>
           <p className="Count__items">Total for {totalItems} items</p>
           <span className="line"></span>
-          <button type="button" className="Count__button">
+          <button
+            type="button"
+            className="Count__button"
+            onClick={() => {
+              setcart([]);
+              alert(
+                /*eslint-disable-next-line */
+                'Your products were added, but the server things are not created yet',
+              );
+            }}
+          >
             Checkout
           </button>
         </div>

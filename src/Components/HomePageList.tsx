@@ -107,14 +107,22 @@ export const HomePageList: React.FC<Props> = ({
           style={{ transform: `translateX(-${chusloNew * STEP}px)` }}
         >
           {sortedToNewArray.map(obj => {
-            const isFavorite = FavouritesA.some(cobj => cobj.id === obj.id);
-            const isChosen = cart?.some(cobj => cobj.id === obj.id);
+            const isFavorite = FavouritesA.some(
+              cobj => cobj.itemId === obj.itemId,
+            );
+            const isChosen = cart?.some(cobj => cobj.itemId === obj.itemId);
 
             return (
               <div className="Brand__new__phone" key={obj.id}>
                 <Link
                   to={`/${obj.category}/${obj.itemId}`}
-                  onClick={() => handleProductClick(obj)}
+                  onClick={() => {
+                    handleProductClick(obj);
+                    window.scrollTo({
+                      top: 0,
+                      behavior: 'smooth',
+                    });
+                  }}
                   style={{ textDecoration: 'none' }}
                 >
                   <img
@@ -282,7 +290,13 @@ export const HomePageList: React.FC<Props> = ({
               <div className="Brand__new__phone" key={obj.id}>
                 <Link
                   to={`/${obj.category}/${obj.itemId}`}
-                  onClick={() => handleProductClick(obj)}
+                  onClick={() => {
+                    handleProductClick(obj);
+                    window.scrollTo({
+                      top: 0,
+                      behavior: 'smooth',
+                    });
+                  }}
                   style={{ textDecoration: 'none' }}
                 >
                   <img
@@ -296,6 +310,7 @@ export const HomePageList: React.FC<Props> = ({
 
                 <div className="Price">
                   <span className="this__Price">${obj.price}</span>
+                  <span className="this__Discount">${obj.fullPrice}</span>
                 </div>
 
                 <div className="phone__Line"></div>

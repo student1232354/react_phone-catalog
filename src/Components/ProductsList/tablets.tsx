@@ -159,8 +159,10 @@ export const Tablets: React.FC<Props> = ({
 
       <div className="Phones__List">
         {visiblePhones.map(obj => {
-          const isFavorite = FavouritesA.some(cobj => cobj.id === obj.id);
-          const inCart = cart.some(cobj => cobj.id === obj.id);
+          const isFavorite = FavouritesA.some(
+            cobj => cobj.itemId === obj.itemId,
+          );
+          const inCart = cart.some(cobj => cobj.itemId === obj.itemId);
 
           return (
             /* eslint-disable-next-line */
